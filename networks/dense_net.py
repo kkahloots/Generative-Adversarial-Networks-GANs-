@@ -7,7 +7,7 @@ Created on Thu Sep 13 00:32:57 2018
 """
 import tensorflow as tf
 import numpy as np
-import _utils.constants as const
+import utils.constants as const
 
 class DenseNet(object):
     def __init__(self, input_, hidden_dim, output_dim, num_layers, reuse, transfer_fct=tf.nn.relu,
