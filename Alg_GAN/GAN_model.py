@@ -37,7 +37,7 @@ class GANModel(BaseModel):
                  transfer_fct=tf.nn.relu, learning_rate=0.002,
                  kinit=tf.contrib.layers.xavier_initializer(), batch_size=32,
                  latent_dim=10, dropout=0.2, batch_norm=True, epochs=200, checkpoint_dir='',
-                 summary_dir='', result_dir='', restore=False, plot=False, model_type=0):
+                 summary_dir='', result_dir='', restore=False, plot=False, model_type=const.GAN):
         super().__init__(checkpoint_dir, summary_dir, result_dir)
 
         self.summary_dir = summary_dir
@@ -205,6 +205,10 @@ class GANModel(BaseModel):
                     if self.plot:
                         self.generate_samples(data_train, session, cur_epoch)
 
+                if cur_epoch % 50 == 0:
+                    if self.colab:
+                        self.push_colab()
+
                 session.run(self.model_graph.increment_cur_epoch_tensor)
 
                 # Early stopping
@@ -215,6 +219,9 @@ class GANModel(BaseModel):
             self.save(session, saver, self.model_graph.global_step_tensor.eval(session))
             if self.plot:
                 self.generate_samples(data_train, session, cur_epoch)
+
+            if self.colab:
+                self.push_colab()
 
         return
 
