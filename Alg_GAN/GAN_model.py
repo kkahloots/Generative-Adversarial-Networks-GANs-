@@ -33,7 +33,7 @@ from utils.plots import plot_dataset, plot_samples, merge, resize_gif
 
 
 class GANModel(BaseModel):
-    def __init__(self, network_params, sigma_act=tf.nn.softplus,
+    def __init__(self, network_params, act_out=tf.nn.softplus,
                  transfer_fct=tf.nn.relu, learning_rate=0.002,
                  kinit=tf.contrib.layers.xavier_initializer(), batch_size=32,
                  latent_dim=10, dropout=0.2, batch_norm=True, epochs=200, checkpoint_dir='',
@@ -58,11 +58,11 @@ class GANModel(BaseModel):
         self.graph = tf.Graph()
         with self.graph.as_default():
             if (model_type == const.GAN):
-                self.model_graph = GANGraph(network_params, sigma_act,
+                self.model_graph = GANGraph(network_params, act_out,
                                             transfer_fct, learning_rate, kinit, batch_size,
                                             reuse=False)
             if (model_type == const.GANCNN):
-                self.model_graph = GANCNNGraph(network_params, sigma_act,
+                self.model_graph = GANCNNGraph(network_params, act_out,
                                                transfer_fct, learning_rate, kinit, batch_size,
                                                reuse=False)
 
