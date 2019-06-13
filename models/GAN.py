@@ -35,7 +35,7 @@ class GAN(GAN_BASE):
                               batch_size=self.config.batch_size, dropout=self.config.dropout, batch_norm=self.config.batch_norm,
                               epochs=self.config.epochs, checkpoint_dir=self.config.checkpoint_dir,
                               summary_dir=self.config.summary_dir, result_dir=self.config.results_dir,
-                              restore=self.flags.restore, plot=self.flags.plot, clustering=self.flags.clustering, colab=self.flags.colab, model_type=self.config.model_type)
+                              restore=self.flags.restore, plot=self.flags.plot, colab=self.flags.colab, model_type=self.config.model_type)
         print('building GAN Model...')
         print('\nNumber of trainable parameters', self.model.trainable_count)
         
