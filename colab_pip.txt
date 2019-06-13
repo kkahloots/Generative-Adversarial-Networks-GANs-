@@ -1,0 +1,14 @@
+!pip install scipy==1.2.1
+!pip install ipython==7.4.0
+!pip install -U -q zipfile36
+!pip install -U -q PyDrive
+!pip install -U -q hdbscan
+!pip install -U -q dask_ml
+
+!git clone https://github.com/kkahloots/Autoencoders.git
+!mv ./Autoencoders/* ./
+!mkdir experiments
+
+#colabpath = '1YYgYDTAnnQG9uvya7lF3A7NwmzWPq4tg'
+# ZwdS+(!P8`SBhbbt
+# ganets.project
