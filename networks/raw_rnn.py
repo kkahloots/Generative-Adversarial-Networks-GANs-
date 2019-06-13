@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Created on Thu Sep 13 11:17:53 2018
 
@@ -5,12 +7,12 @@ Created on Thu Sep 13 11:17:53 2018
 """
 
 import tensorflow as tf
-import utils.constants as const
-from utils.utils import get1toT
+import _utils.constants as const
+from _utils.utils import get1toT
 from networks.base_raw_rnn import BaseRawRNN
 from networks.dense_net import DenseNet
 
-import utils.utils as utils
+import _utils.utils as utils
 
 class RawRNNConcat(BaseRawRNN):
     def __init__(self, cell_type, state_dim, input_, max_time, output_dim, reuse, drop_rate_x=0.,

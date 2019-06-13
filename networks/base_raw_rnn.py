@@ -1,10 +1,12 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Created on Thu Sep 13 00:32:57 2018
 
 @author: pablosanchez
 """
 import tensorflow as tf
-import utils.constants as const
+import _utils.constants as const
 class BaseRawRNN(object):
     def __init__(self,input_, max_time, output_dim, cell_type, state_dim, reuse,kinit=tf.contrib.layers.xavier_initializer(),
                  bias_init=tf.constant_initializer(0.01)):

@@ -1,10 +1,12 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Created on Thu Sep 13 00:32:57 2018
 
 @author: pablosanchez
 """
 import tensorflow as tf
-import utils.constants as const
+import _utils.constants as const
 from networks.dense_net import DenseNet
 
 class DeconvNet(object):
