@@ -47,7 +47,7 @@ class GANModel(BaseModel):
         self.dropout = dropout
 
         self.epochs = epochs
-        self.z_file = result_dir + '\\z_file'
+        self.z_file = result_dir + '/z_file'
         self.restore = restore
         self.colab = colab
         self.plot = plot
@@ -301,26 +301,26 @@ class GANModel(BaseModel):
             print('No images were generated during trainning!')
 
             path = self.summary_dir
-            st = path + '\\{} samples generation in epoch'.format(self.summary_dir.split('\\')[-1:][0])
+            st = path + '/{} samples generation in epoch'.format(self.summary_dir.split('/')[-1:][0])
             self.recons_files = [f for f in glob.glob(path + "**/*.jpg", recursive=True) if f.startswith(st)]
-            self.recons_files = list(map(lambda f: f.split('\\')[-1], self.recons_files))
+            self.recons_files = list(map(lambda f: f.split('/')[-1], self.recons_files))
 
             self.recons_files.sort(key=utils.natural_keys)
-            self.recons_files = list(map(lambda f: path + '\\' + f, self.recons_files))
+            self.recons_files = list(map(lambda f: path + '/' + f, self.recons_files))
 
-            st = path + '\\{} Z space in epoch'.format(self.summary_dir.split('\\')[-1:][0])
+            st = path + '/{} Z space in epoch'.format(self.summary_dir.split('/')[-1:][0])
             self.z_space_files = [f for f in glob.glob(path + "**/*.jpg", recursive=True) if f.startswith(st)]
-            self.z_space_files = list(map(lambda f: f.split('\\')[-1], self.z_space_files))
+            self.z_space_files = list(map(lambda f: f.split('/')[-1], self.z_space_files))
 
             self.z_space_files.sort(key=utils.natural_keys)
-            self.z_space_files = list(map(lambda f: path + '\\' + f, self.z_space_files))
+            self.z_space_files = list(map(lambda f: path + '/' + f, self.z_space_files))
 
             if len(self.recons_files) == 0:
                 print('No previous images found!')
                 return None, None
 
         path = self.summary_dir
-        st = path + '\\{} samples generation in epoch'.format(self.summary_dir.split('\\')[-1:][0])
+        st = path + '/{} samples generation in epoch'.format(self.summary_dir.split('/')[-1:][0])
         images = [PILImage.open(fn) for fn in self.recons_files]
 
         images[0].save(st + '_animate.gif', save_all=True, append_images=images[1:], duration=len(images) * 60,
@@ -330,7 +330,7 @@ class GANModel(BaseModel):
         with open(st + '_res_animate.gif', 'rb') as f:
             img1 = Image(data=f.read(), format='gif')
 
-        st = path + '\\{} Z space in epoch'.format(self.summary_dir.split('\\')[-1:][0])
+        st = path + '/{} Z space in epoch'.format(self.summary_dir.split('/')[-1:][0])
         images = [PILImage.open(fn) for fn in self.z_space_files]
         images[0].save(st + '_animate.gif', save_all=True, append_images=images[1:], duration=len(images) * 60,
                        loop=0xffff, dpi=70)
@@ -351,7 +351,7 @@ class GANModel(BaseModel):
         Z_pca = pca.fit_transform(z_recons_l)
         print('Z space dimensions: {}'.format(Z_pca.shape))
         print('Ploting Z space ...')
-        z_space = self.summary_dir + '\\{} Z space in epoch {}.jpg'.format(self.summary_dir.split('\\')[-1:][0],
+        z_space = self.summary_dir + '/{} Z space in epoch {}.jpg'.format(self.summary_dir.split('/')[-1:][0],
                                                                            cur_epoch)
         self.z_space_files.append(z_space)
         plot_dataset(Z_pca, y=data.labels, save=z_space)
@@ -363,8 +363,8 @@ class GANModel(BaseModel):
         print('Generating Samples ...')
 
         x_recons_l = self.reconst(data.samples)
-        recons_file = self.summary_dir + '\\{} samples generation in epoch {}.jpg'.format(
-            self.summary_dir.split('\\')[-1:][0], cur_epoch)
+        recons_file = self.summary_dir + '/{} samples generation in epoch {}.jpg'.format(
+            self.summary_dir.split('/')[-1:][0], cur_epoch)
         self.recons_files.append(recons_file)
         plot_samples(x_recons_l, scale=10, save=recons_file)
 
