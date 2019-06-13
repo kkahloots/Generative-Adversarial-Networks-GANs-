@@ -37,7 +37,7 @@ class GANModel(BaseModel):
                  transfer_fct=tf.nn.relu, learning_rate=0.002,
                  kinit=tf.contrib.layers.xavier_initializer(), batch_size=32,
                  latent_dim=10, dropout=0.2, batch_norm=True, epochs=200, checkpoint_dir='',
-                 summary_dir='', result_dir='', restore=False, plot=False, model_type=const.GAN):
+                 summary_dir='', result_dir='', restore=False, plot=False, colab=False, model_type=const.GAN):
         super().__init__(checkpoint_dir, summary_dir, result_dir)
 
         self.summary_dir = summary_dir
@@ -49,7 +49,9 @@ class GANModel(BaseModel):
         self.epochs = epochs
         self.z_file = result_dir + '\\z_file'
         self.restore = restore
+        self.colab = colab
         self.plot = plot
+
         if self.plot:
             self.z_space_files = list()
             self.recons_files = list()
