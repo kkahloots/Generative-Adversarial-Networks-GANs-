@@ -260,7 +260,10 @@ class GANModel(BaseModel):
             z_decode = self.decode(z)
 
             for i in range(z_decode.shape[0]):
-                decode[i] = [z_decode[i]]
+                try:
+                    decode[i] = [z_decode[i].compute()]
+                except:
+                    decode[i] = [z_decode[i]]
 
             for i in range(z_decode.shape[0]):
                 decodes[i] = decodes[i] + decode[i]
@@ -270,20 +273,9 @@ class GANModel(BaseModel):
         for idx in decodes:
             l = []
 
-            try:
-                l += [input1[idx:idx + 1][0].compute()]
-            except:
-                l += [input1[idx:idx + 1][0]]
-
-            try:
-                l += decodes[idx].compute()
-            except:
-                l += decodes[idx]
-
-            try:
-                l += [input2[idx:idx + 1][0].compute()]
-            except:
-                l += [input2[idx:idx + 1][0]]
+            l += [input1[idx:idx + 1][0]]
+            l += decodes[idx]
+            l += [input2[idx:idx + 1][0]]
 
             imgs.append(l)
         del decodes
