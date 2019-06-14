@@ -1,7 +1,6 @@
 import numpy as np
 
 import random
-from scipy.misc import imresize
 import pandas as pd
 from tqdm import tqdm
 from skimage import util 
@@ -177,7 +176,7 @@ def plot_samples(samples, scale=10, save=None):
     fig_width = int(im.shape[0] * scale)
     fig_height = int(im.shape[1] * scale)
     
-    im = imresize(im, (fig_width, fig_height))
+    im = np.array(Image.fromarray(im).resize((fig_width, fig_height)))
     
     fig = plt.figure(dpi=150)
     ax = plt.subplot(111)
