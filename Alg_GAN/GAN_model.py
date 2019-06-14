@@ -269,11 +269,25 @@ class GANModel(BaseModel):
 
         for idx in decodes:
             l = []
-            l += [input1[idx:idx + 1][0]]
-            l += decodes[idx]
-            l += [input2[idx:idx + 1][0]]
+
+            try:
+                l += [input1[idx:idx + 1][0]].compute()
+            except:
+                l += [input1[idx:idx + 1][0]]
+
+            try:
+                l += decodes[idx].compute()
+            except:
+                l += decodes[idx]
+
+            try:
+                l += [input2[idx:idx + 1][0]].compute()
+            except:
+                l += [input2[idx:idx + 1][0]]
+
             imgs.append(l)
         del decodes
+
         return imgs
 
     def reconst_loss(self, inputs):
