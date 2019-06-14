@@ -271,7 +271,7 @@ class GANModel(BaseModel):
             l = []
 
             try:
-                l += [input1[idx:idx + 1][0]].compute()
+                l += [input1[idx:idx + 1][0].compute()]
             except:
                 l += [input1[idx:idx + 1][0]]
 
@@ -281,7 +281,7 @@ class GANModel(BaseModel):
                 l += decodes[idx]
 
             try:
-                l += [input2[idx:idx + 1][0]].compute()
+                l += [input2[idx:idx + 1][0].compute()]
             except:
                 l += [input2[idx:idx + 1][0]]
 
