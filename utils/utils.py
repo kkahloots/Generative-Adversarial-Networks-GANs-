@@ -1,22 +1,18 @@
-from __future__ import division
 import math
 import random
-import pprint
-import scipy.misc
-# import numpy as da
-import dask.array as da
-import dask.dataframe as dd
-from time import gmtime, strftime
-from six.moves import xrange
-import matplotlib.pyplot as plt
-# import pandas as pd
 
-import re
+import numpy as np
+import dask.array as da
+from dask import delayed
+import dask.dataframe as dd
+from time import strftime
+
+
+
 import os
 import shutil
-import argparse
 import time
-import gzip
+
 
 import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
@@ -28,12 +24,11 @@ sys.path.append('..')
 
 from utils.dataset import Dataset
 
-from scipy.io import loadmat
 
 '''  ------------------------------------------------------------------------------
                                     DATA METHODS
  ------------------------------------------------------------------------------ '''
-from sklearn.model_selection import train_test_split
+from dask_ml.model_selection import train_test_split
 
 scalar = None
 
@@ -73,6 +68,7 @@ def prepare_dataset(X):
 def process_data(X, y=None, test_size=0.20, dummies=False):
     if y is None:
         y = da.ones(X.shape[0])
+    y_uniqs = np.unique(y)
 
     len_ = X.shape[0]
     X = prepare_dataset(X)
@@ -81,6 +77,20 @@ def process_data(X, y=None, test_size=0.20, dummies=False):
         y = dd.get_dummies(y)
 
     shape_ = list(X.shape[1:])
+
+    samples = list()
+    for _ in range(10):
+        for y_uniq in y_uniqs:
+            sample = list()
+            for xa, ya in zip(chunks(X, 10),chunks(y, 10)):
+                try:
+                    sample.append([xa[ya == y_uniq][random.randint(0, len(xa[ya == y_uniq]) - 1)]])
+                    if len(sample) >= 500:
+                        break
+                except:
+                    pass
+            samples += sample
+    samples = da.vstack(samples)
 
     X_train, X_test, y_train, y_test = train_test_split(X.flatten().reshape(len_, -1), y, test_size=test_size,
                                                         random_state=4891)
@@ -94,14 +104,15 @@ def process_data(X, y=None, test_size=0.20, dummies=False):
     train_dataset = Dataset(X_train, y_train)
     test_dataset = Dataset(X_test, y_test)
 
-    samples = list()
-    for _ in range(10):
-        for y_uniq in da.unique(train_dataset.labels):
-            samples.append(train_dataset.x[train_dataset.labels == y_uniq][
-                               random.randint(0, len(train_dataset.x[train_dataset.labels == y_uniq]) - 1)])
-
-    train_dataset.samples = da.array(samples)
+    train_dataset.samples = samples
+    print('Sample dataset shape: ', train_dataset.samples.shape)
     return train_dataset, test_dataset
+
+
+def chunks(l, n):
+    """Yield successive n-sized chunks from l."""
+    for i in range(0, len(l), n):
+        yield l[i:i + n]
 
 
 def merge_datasets(data, data_dim, train_size, valid_size=0):
